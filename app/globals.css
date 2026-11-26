@@ -234,6 +234,9 @@ footer p{max-width:520px;margin:10px auto 0;line-height:1.6}
 .rg-meta span{font-size:12.5px;border:1px solid var(--line2);border-radius:99px;padding:5px 12px;color:var(--muted)}
 .gbtn{width:100%;margin-top:26px;background:#fff;color:#1f1f1f;border-radius:14px;min-height:54px;display:flex;align-items:center;justify-content:center;gap:12px;font-weight:700;border:0;cursor:pointer;transition:transform .2s}
 .gbtn:hover{transform:translateY(-2px)}
+.or-line{display:flex;align-items:center;gap:14px;margin-top:22px;color:var(--dim);font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase}
+.or-line::before,.or-line::after{content:"";flex:1;height:1px;background:var(--line2)}
+.or-line + .gbtn{margin-top:18px}
 .gbtn svg{width:20px;height:20px}
 .who-me{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:24px}
 .who-me img,.who-me .ph{width:40px;height:40px;border-radius:50%;flex:none;background:#222;display:grid;place-items:center;font-weight:700}

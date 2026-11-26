@@ -33,7 +33,7 @@ export function Logo({ className = "logo", eager = false }: { className?: string
   return (
     <span className={className}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/logo-red.png" alt="Ethio Computer School" width={622} height={221} loading={eager ? "eager" : "lazy"} />
+      <img src="/logo-color.png" alt="Ethio Computer School" width={864} height={299} loading={eager ? "eager" : "lazy"} />
     </span>
   );
 }

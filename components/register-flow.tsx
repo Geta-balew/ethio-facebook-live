@@ -3,19 +3,21 @@ import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { registerAction, type RegState } from "@/app/register/actions";
+import { formRegisterAction, registerAction, type RegState } from "@/app/register/actions";
 import { calendarLink, dateRange, dayLabel, timeLabel, type SiteSettings } from "@/lib/settings-shared";
 import { CalIcon, FbIcon, GoogleIcon, Logo, TgIcon } from "@/components/icons";
 import { LangToggle, useLang } from "@/components/use-lang";
 
 type U = { name: string; email: string; image: string | null } | null;
-type R = { seat: number; name: string; phone: string } | null;
+type R = { seat: number; name: string; email: string; phone: string } | null;
 
 export default function RegisterFlow({ s, user, reg }: { s: SiteSettings; user: U; reg: R }) {
   const [lang, setLang] = useLang(s.defaultLang);
   const t = s.text[lang];
   const router = useRouter();
-  const [state, action, pending] = useActionState<RegState, FormData>(registerAction, {});
+  const [gState, action, pending] = useActionState<RegState, FormData>(registerAction, {});
+  const [fState, formAction, fPending] = useActionState<RegState, FormData>(formRegisterAction, {});
+  const state = user ? gState : fState;
   const [gLoading, setGLoading] = useState(false);
   const [source, setSource] = useState("");
 
@@ -29,7 +31,7 @@ export default function RegisterFlow({ s, user, reg }: { s: SiteSettings; user: 
     } catch {}
   }, []);
 
-  useEffect(() => { if (state.ok) router.refresh(); }, [state.ok, router]);
+  useEffect(() => { if (gState.ok || fState.ok) router.refresh(); }, [gState.ok, fState.ok, router]);
 
   const google = async () => {
     setGLoading(true);
@@ -39,10 +41,10 @@ export default function RegisterFlow({ s, user, reg }: { s: SiteSettings; user: 
   const signOut = async () => { await authClient.signOut(); router.refresh(); };
 
   const time = s.days[0] ? timeLabel(s.days[0].start, lang) : "";
-  const errMsg = state.error === "phone" ? t.rBadPhone : state.error === "name" ? t.rBadName : state.error === "closed" ? t.rClosed : state.error ? t.rError : "";
+  const errMsg = state.error === "phone" ? t.rBadPhone : state.error === "name" ? t.rBadName : state.error === "email" ? t.rBadEmail : state.error === "closed" ? t.rClosed : state.error ? t.rError : "";
 
   let body: React.ReactNode;
-  if (reg && user) {
+  if (reg) {
     body = (
       <>
         <h1>{t.rDone}</h1>
@@ -63,8 +65,8 @@ export default function RegisterFlow({ s, user, reg }: { s: SiteSettings; user: 
           </div>
         </div>
         <div className="who-me">
-          {user.image ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={user.image} alt="" /> : <span className="ph">{user.name.charAt(0)}</span>}
-          <div><b>{reg.name}</b><span>{user.email} · {reg.phone}</span></div>
+          {user?.image ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={user.image} alt="" /> : <span className="ph">{reg.name.charAt(0)}</span>}
+          <div><b>{reg.name}</b><span>{reg.email} · {reg.phone}</span></div>
         </div>
       </>
     );
@@ -91,11 +93,26 @@ export default function RegisterFlow({ s, user, reg }: { s: SiteSettings; user: 
     body = (
       <>
         <h1 dangerouslySetInnerHTML={{ __html: t.rTitle }} />
-        <p className="lead">{t.rSub}</p>
+        <p className="lead">{t.rFormSub}</p>
         <div className="rg-meta"><span>{dateRange(s.days, lang)}</span><span>{time}</span><span>Live · Online</span><span>{t.price}</span></div>
-        {s.registrationOpen
-          ? <button className="gbtn" onClick={google} disabled={gLoading}><GoogleIcon />{gLoading ? "…" : t.rGoogle}</button>
-          : <p className="err">{t.rClosed}</p>}
+        {s.registrationOpen ? (
+          <>
+            <form action={formAction}>
+              <input type="hidden" name="source" value={source} />
+              <div className="fld"><label htmlFor="name">{t.rName}</label><input id="name" name="name" required minLength={2} maxLength={100} autoComplete="name" /></div>
+              <div className="fld"><label htmlFor="email">{t.rEmailLbl}</label><input id="email" name="email" type="email" inputMode="email" required maxLength={200} autoComplete="email" /></div>
+              <div className="fld">
+                <label htmlFor="phone">{t.rPhone}</label>
+                <input id="phone" name="phone" type="tel" inputMode="tel" placeholder="09XX XXX XXX" required autoComplete="tel" />
+                <small>{t.rPhoneHint}</small>
+              </div>
+              {errMsg && <p className="err" role="alert">{errMsg}</p>}
+              <button className="btn btn-red" disabled={fPending}>{fPending ? "…" : `${t.rSubmit} →`}</button>
+            </form>
+            <div className="or-line"><span>{t.rOr}</span></div>
+            <button className="gbtn" onClick={google} disabled={gLoading}><GoogleIcon />{gLoading ? "…" : t.rGoogle}</button>
+          </>
+        ) : <p className="err">{t.rClosed}</p>}
       </>
     );
   }

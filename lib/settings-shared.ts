@@ -17,7 +17,7 @@ export type SiteText = {
   bio: string; faqH: string; faq: string[][]; finH: string; finP: string; disc: string;
   // register page
   rTitle: string; rSub: string; rGoogle: string; rName: string; rEmail: string; rPhone: string; rPhoneHint: string;
-  rSubmit: string; rBadPhone: string; rBadName: string; rClosed: string; rError: string;
+  rSubmit: string; rBadPhone: string; rBadName: string; rFormSub: string; rEmailLbl: string; rOr: string; rBadEmail: string; rClosed: string; rError: string;
   rDone: string; rDoneSub: string; rSeat: string; rTg: string; rSubYt: string; rCal: string; rSignOut: string; rBack: string;
 };
 
@@ -59,12 +59,12 @@ const en: SiteText = {
   st1: "Followers", st2: "Minutes viewed · last 60 days", or: "+", st3: "Days · minimum page age",
   joinH: "Three steps. <em>Two minutes.</em>",
   steps: [
-    ["Register with Google", "Sign in with Gmail and add your phone number.", "Register"],
+    ["Register", "Enter your name, email and phone — or continue with Google.", "Register"],
     ["Get your live link", "Right after registering, you'll see where and how to join the live.", ""],
     ["Join on the night", "Be there at 8 PM — reminders and the recording come to registered participants.", ""],
   ],
   freeL: "Your seat", price: "Free", cdD: "Days", cdH: "Hrs", cdM: "Min", cdS: "Sec",
-  regNote: "Sign in with Google · Takes 30 seconds · No payment",
+  regNote: "Takes 30 seconds · No payment",
   whoH: "This is for you <em>if you…</em>",
   who: [
     "Opened a Facebook page but can't get views or followers",
@@ -85,7 +85,7 @@ const en: SiteText = {
   faq: [
     ["Is it really free?", "Yes. The 3-day live is completely free — just register."],
     ["Where does the live happen?", "Online. As soon as you register, you'll get the link and everything you need to join."],
-    ["Why do I sign in with Google?", "So we can send you reminders and the recording. We only use your name, email and phone for this event."],
+    ["Why do you need my email and phone?", "So we can send you reminders and the recording. We only use your name, email and phone for this event."],
     ["Do I need a page already?", "No. We start from zero, including opening your page or switching on Professional Mode."],
     ["Can I really be ready in 30 days?", "30 days is the minimum page age and our target. We'll show you the daily math to hit the numbers — but results depend on your consistency."],
     ["Can I earn from Facebook in Ethiopia?", "We cover the payment options for creators in Ethiopia and in the diaspora. Eligibility depends on Meta's rules for your country — income is not guaranteed."],
@@ -96,6 +96,7 @@ const en: SiteText = {
   rTitle: "Reserve your <em>free seat</em>", rSub: "Sign in with your Gmail account, add your phone number, and you're in.",
   rGoogle: "Continue with Google", rName: "Full name", rEmail: "Gmail", rPhone: "Phone number", rPhoneHint: "e.g. 0911 234 567 or +1 202 555 0100",
   rSubmit: "Complete registration", rBadPhone: "Please enter a valid phone number.", rBadName: "Please enter your name.",
+  rFormSub: "Fill in your details, or continue with Google, and you're in.", rEmailLbl: "Email", rOr: "or", rBadEmail: "Please enter a valid email address.",
   rClosed: "Registration is closed.", rError: "Something went wrong. Please try again.",
   rDone: "You're in! 🎉", rDoneSub: "Your seat is reserved. The live streams on our Facebook page, Ethio Computer School — do these now so you don't miss Day 1:",
   rSeat: "Seat", rTg: "Join the Telegram group", rSubYt: "Follow the page & turn on 🔔", rCal: "Add to Google Calendar",
@@ -128,12 +129,12 @@ const am: SiteText = {
   st1: "Followers", st2: "የእይታ ደቂቃ · ባለፉት 60 ቀናት", or: "+", st3: "ቀን · ዝቅተኛው የፔጅ ዕድሜ",
   joinH: "3 ደረጃዎች። <em>2 ደቂቃ።</em>",
   steps: [
-    ["በ Google ይመዝገቡ", "በ Gmail ገብተው ስልክ ቁጥርዎን ያስገቡ።", "ይመዝገቡ"],
+    ["ይመዝገቡ", "ስም፣ ኢሜይል እና ስልክ ያስገቡ — ወይም በ Google ይቀጥሉ።", "ይመዝገቡ"],
     ["የ Live ሊንክዎን ያግኙ", "እንደተመዘገቡ Live ስልጠናውን የት እና እንዴት እንደሚቀላቀሉ ያያሉ።", ""],
     ["በዕለቱ ይገኙ", "ምሽት 2 ሰዓት ይገኙ — Reminder እና Recording ለተመዘገቡ ይደርሳል።", ""],
   ],
   freeL: "የእርስዎ ቦታ", price: "ነፃ", cdD: "ቀን", cdH: "ሰዓት", cdM: "ደቂቃ", cdS: "ሰከንድ",
-  regNote: "በ Google ይግቡ · 30 ሰከንድ ብቻ · ክፍያ የለም",
+  regNote: "30 ሰከንድ ብቻ · ክፍያ የለም",
   whoH: "ይህ ለእርስዎ ነው፣ <em>እርስዎ…</em>",
   who: [
     "ፌስቡክ ፔጅ ከፍተው Views እና Followers ማግኘት ያቃተዎት ከሆነ",
@@ -154,7 +155,7 @@ const am: SiteText = {
   faq: [
     ["በእውነት ነፃ ነው?", "አዎ። የ3 ቀኑ Live ሙሉ በሙሉ ነፃ ነው — መመዝገብ ብቻ ነው የሚጠበቅብዎ።"],
     ["Live ስልጠናው የት ነው የሚካሄደው?", "Online ነው። እንደተመዘገቡ ሊንኩን እና ለመቀላቀል የሚያስፈልግዎትን ሁሉ ያገኛሉ።"],
-    ["ለምን በ Google እገባለሁ?", "Reminder እና Recording ልንልክልዎ ነው። ስምዎን፣ ኢሜይልዎን እና ስልክዎን ለዚህ ኢቨንት ብቻ እንጠቀማለን።"],
+    ["ኢሜይል እና ስልክ ለምን ያስፈልጋል?", "Reminder እና Recording ልንልክልዎ ነው። ስምዎን፣ ኢሜይልዎን እና ስልክዎን ለዚህ ኢቨንት ብቻ እንጠቀማለን።"],
     ["ፔጅ ሊኖረኝ ይገባል?", "አያስፈልግም። ፔጅ መክፈትን ወይም Professional Mode ማብራትን ጨምሮ ከዜሮ እንጀምራለን።"],
     ["በእውነት በ30 ቀን ዝግጁ መሆን ይቻላል?", "30 ቀን ዝቅተኛው የፔጅ ዕድሜ እና ኢላማችን ነው። ቁጥሮቹን ለመሙላት የዕለት ሂሳቡን እናሳያለን — ውጤቱ ግን በእርስዎ ቋሚነት ይወሰናል።"],
     ["ከኢትዮጵያ የፌስቡክ ገቢ ማግኘት እችላለሁ?", "በኢትዮጵያ እና በዲያስፖራ ላሉ Creators ያሉትን የክፍያ አማራጮች እናሳያለን። ብቁነት በ Meta የሀገር ህጎች ይወሰናል — ገቢ ዋስትና የለውም።"],
@@ -165,6 +166,7 @@ const am: SiteText = {
   rTitle: "<em>ነፃ ቦታዎን</em> ያስይዙ", rSub: "በ Gmail አካውንትዎ ይግቡ፣ ስልክ ቁጥርዎን ያስገቡ — ተመዝግበዋል።",
   rGoogle: "በ Google ይቀጥሉ", rName: "ሙሉ ስም", rEmail: "Gmail", rPhone: "ስልክ ቁጥር", rPhoneHint: "ለምሳሌ 0911 234 567 ወይም +1 202 555 0100",
   rSubmit: "ምዝገባውን ያጠናቅቁ", rBadPhone: "እባክዎ ትክክለኛ ስልክ ቁጥር ያስገቡ።", rBadName: "እባክዎ ስምዎን ያስገቡ።",
+  rFormSub: "መረጃዎን ይሙሉ ወይም በ Google ይቀጥሉ — ተመዝግበዋል።", rEmailLbl: "ኢሜይል", rOr: "ወይም", rBadEmail: "እባክዎ ትክክለኛ ኢሜይል ያስገቡ።",
   rClosed: "ምዝገባው ተዘግቷል።", rError: "ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
   rDone: "ተመዝግበዋል! 🎉", rDoneSub: "ቦታዎ ተይዟል። Live ስልጠናው የሚተላለፈው በ Facebook ፔጃችን Ethio Computer School ላይ ነው — ቀን 1 እንዳያመልጥዎ አሁኑኑ እነዚህን ያድርጉ፦",
   rSeat: "ቦታ ቁጥር", rTg: "የ Telegram ግሩፑን ይቀላቀሉ", rSubYt: "ፔጁን Follow ያድርጉ እና 🔔 ያብሩ", rCal: "Google Calendar ላይ ያስቀምጡ",
