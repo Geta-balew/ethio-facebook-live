@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+lib/generated
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+.vercel
+.env*
